@@ -15,6 +15,8 @@ import {
 	Feather,
 	FontAwesome5,
 } from "@expo/vector-icons";
+import Categories from "../components/Categories";
+import FeaturedRow from "../components/FeaturedRow";
 
 export default function HomeScreen() {
 	return (
@@ -46,11 +48,33 @@ export default function HomeScreen() {
 					/>
 				</View>
 				<Feather name="filter" size={24} color="#00CCBB" />
+				{/* <Feather name="sliders" size={24} color="#00CCBB" /> */}
 			</View>
 			{/* Body */}
 			<ScrollView>
 				{/* Categories */}
+				<Categories></Categories>
+
 				{/* Featured rows */}
+
+				{/* Featured */}
+				<FeaturedRow
+					title="Featured"
+					description="Paid placements from our partners"
+					id="123"
+				/>
+				{/* Tasty Discounts */}
+				<FeaturedRow
+					title="Tasty Discounts"
+					description="Everyone's been enjoying these juicy discounts"
+					id="1234"
+				/>
+				{/* Offers near you */}
+				<FeaturedRow
+					title="Offers near you"
+					description="Why not support your local restaurant tonight"
+					id="12345"
+				/>
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -59,7 +83,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
 	// SafeAreaView only works on IOS and this is the workaround for Android.
 	AndroidSafeArea: {
-		// flex: 1,
+		flex: 1,
 		backgroundColor: "white",
 		paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
 	},
@@ -71,7 +95,7 @@ const styles = StyleSheet.create({
 	},
 	headerTop: {
 		flexDirection: "row",
-		paddingBottom: 3,
+		padding: 10,
 		alignItems: "center",
 		marginHorizontal: 16,
 	},
