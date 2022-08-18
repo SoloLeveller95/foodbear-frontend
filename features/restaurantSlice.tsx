@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface InitialState {
+	restaurant: {};
+}
+
+const initialState: InitialState = {
 	restaurant: {
 		id: null,
 		imgUrl: null,
@@ -26,6 +30,6 @@ export const restaurantSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { setRestaurant } = restaurantSlice.actions;
 
-export const selectRestaurant = (state) => state.restaurant.restaurant;
+export const selectRestaurant = (state: any) => state.restaurant.restaurant;
 
 export default restaurantSlice.reducer;
