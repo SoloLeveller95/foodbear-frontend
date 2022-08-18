@@ -1,7 +1,8 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import RestaurantCard from "./RestaurantCard";
+import client from "../sanity";
 
 interface FeaturedRowProps {
 	title: string;
@@ -9,12 +10,37 @@ interface FeaturedRowProps {
 	id: string;
 }
 
-export default function FeaturedRow({ title, description }: FeaturedRowProps) {
+export default function FeaturedRow({
+	id,
+	title,
+	description,
+}: FeaturedRowProps) {
+	const [restaurants, setRestaurants] = useState<any[]>([]);
+	useEffect(() => {
+		client
+			.fetch(
+				`*[_type == "featured" && _id == $id] {
+  					...,
+  					restaurants[]->{
+    					...,
+    					dishes[]->,
+						type-> {
+  							name
+							}
+  						},
+					}[0]`,
+				{ id: id }
+			)
+			.then((data) => {
+				setRestaurants(data?.restaurants);
+			});
+	}, []);
+
 	return (
 		<View>
 			<View style={styles.header}>
 				<Text style={styles.headerText}>{title}</Text>
-				<AntDesign name="arrowright" size={24} color="#00CCBB" />
+				<AntDesign name="arrowright" size={24} color="#D70F64" />
 			</View>
 			<Text style={styles.text}>{description}</Text>
 
@@ -24,90 +50,22 @@ export default function FeaturedRow({ title, description }: FeaturedRowProps) {
 				showsHorizontalScrollIndicator={false}
 			>
 				{/* Restaurant cards */}
-				<RestaurantCard
-					id={123}
-					imgUrl="../assets/sushi.jpg"
-					title="Yo!Sushi"
-					rating={4.5}
-					genre="Japanese"
-					address="123 Main St"
-					short_description="This is a Test description"
-					dishes={[]}
-					long={20}
-					lat={0}
-				/>
-				<RestaurantCard
-					id={123}
-					imgUrl="../assets/sushi.jpg"
-					title="Yo!Sushi"
-					rating={4.5}
-					genre="Japanese"
-					address="123 Main St"
-					short_description="This is a Test description"
-					dishes={[]}
-					long={20}
-					lat={0}
-				/>
-				<RestaurantCard
-					id={123}
-					imgUrl="../assets/sushi.jpg"
-					title="Yo!Sushi"
-					rating={4.5}
-					genre="Japanese"
-					address="123 Main St"
-					short_description="This is a Test description"
-					dishes={[]}
-					long={20}
-					lat={0}
-				/>
-				<RestaurantCard
-					id={123}
-					imgUrl="../assets/sushi.jpg"
-					title="Yo!Sushi"
-					rating={4.5}
-					genre="Japanese"
-					address="123 Main St"
-					short_description="This is a Test description"
-					dishes={[]}
-					long={20}
-					lat={0}
-				/>
-				<RestaurantCard
-					id={123}
-					imgUrl="../assets/sushi.jpg"
-					title="Yo!Sushi"
-					rating={4.5}
-					genre="Japanese"
-					address="123 Main St"
-					short_description="This is a Test description"
-					dishes={[]}
-					long={20}
-					lat={0}
-				/>
-				<RestaurantCard
-					id={123}
-					imgUrl="../assets/sushi.jpg"
-					title="Yo!Sushi"
-					rating={4.5}
-					genre="Japanese"
-					address="123 Main St"
-					short_description="This is a Test description"
-					dishes={[]}
-					long={20}
-					lat={0}
-				/>
-				<RestaurantCard
-					id={123}
-					imgUrl="../assets/sushi.jpg"
-					title="Yo!Sushi"
-					rating={4.5}
-					genre="Japanese"
-					address="123 Main St"
-					short_description="This is a Test description"
-					dishes={[]}
-					long={20}
-					lat={0}
-				/>
+
+				{restaurants?.map((restaurant) => (
+					<RestaurantCard
+						key={restaurant._id}
+						id={restaurant._id}
+						imgUrl={restaurant.image}
+						address={restaurant.address}
+						title={restaurant.name}
+						dishes={restaurant.dishes}
+						rating={restaurant.rating}
+						short_description={restaurant.short_description}
+						genre={restaurant.type?.name}
+						long={restaurant.long}
+						lat={restaurant.lat}
+					/>
+				))}
 			</ScrollView>
 		</View>
 	);

@@ -9,7 +9,7 @@ import {
 	TextInput,
 	ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
 	MaterialCommunityIcons,
 	Feather,
@@ -17,13 +17,53 @@ import {
 } from "@expo/vector-icons";
 import Categories from "../components/Categories";
 import FeaturedRow from "../components/FeaturedRow";
+import client from "../sanity";
+import Dishrow2 from "../components/Dishrow2";
 
 export default function HomeScreen() {
+	const [featuredCategories, setFeaturedCategories] = useState<any[]>([]);
+	const [dishes, setDishes] = useState<any[]>([]);
+	const [items, setItems] = useState(10);
+
+	useEffect(() => {
+		client
+			.fetch(
+				`*[_type == "featured"] {
+  ...,
+  restaurants[]->{
+    ...,
+    dishes[]->,
+type-> {
+  name
+}
+  }
+}`
+			)
+			.then((data: any) => {
+				setFeaturedCategories(data);
+			});
+	}, []);
+
+	useEffect(() => {
+		client
+			.fetch(
+				`*[_type == "dish"] {
+name, price, short_description,image,_id
+}[0...$items]`,
+				{ items: items }
+			)
+			.then((data: any) => {
+				setDishes(data);
+			});
+	}, []);
 	return (
 		<SafeAreaView style={styles.AndroidSafeArea}>
 			{/* Header */}
 			<View style={styles.headerTop}>
-				<Image style={styles.logo} source={require("../assets/logo.png")} />
+				<Image
+					style={styles.logo}
+					source={require("../assets/delivery3.png")}
+				/>
 				<View style={styles.leftHeaderTextContainer}>
 					<Text style={styles.text1}>Deliver Now!</Text>
 					<View style={styles.text2Container}>
@@ -32,11 +72,15 @@ export default function HomeScreen() {
 						<MaterialCommunityIcons
 							name="chevron-down"
 							size={24}
-							color="#00CCBB"
+							color="#D70F64"
 						/>
 					</View>
 				</View>
-				<Feather name="user" size={35} color="#00CCBB" />
+				<MaterialCommunityIcons
+					name="clipboard-list"
+					size={35}
+					color="#D70F64"
+				/>
 			</View>
 			{/* Search */}
 			<View style={styles.headerBottom}>
@@ -47,8 +91,6 @@ export default function HomeScreen() {
 						keyboardType="default"
 					/>
 				</View>
-				<Feather name="filter" size={24} color="#00CCBB" />
-				{/* <Feather name="sliders" size={24} color="#00CCBB" /> */}
 			</View>
 			{/* Body */}
 			<ScrollView>
@@ -57,24 +99,25 @@ export default function HomeScreen() {
 
 				{/* Featured rows */}
 
-				{/* Featured */}
-				<FeaturedRow
-					title="Featured"
-					description="Paid placements from our partners"
-					id="123"
-				/>
-				{/* Tasty Discounts */}
-				<FeaturedRow
-					title="Tasty Discounts"
-					description="Everyone's been enjoying these juicy discounts"
-					id="1234"
-				/>
-				{/* Offers near you */}
-				<FeaturedRow
-					title="Offers near you"
-					description="Why not support your local restaurant tonight"
-					id="12345"
-				/>
+				{featuredCategories?.map((category) => (
+					<FeaturedRow
+						key={category._id}
+						title={category.name}
+						description={category.short_description}
+						id={category._id}
+					/>
+				))}
+
+				{dishes?.map((dish) => (
+					<Dishrow2
+						key={dish._id}
+						id={dish._id}
+						name={dish.name}
+						description={dish.short_description}
+						price={dish.price}
+						image={dish.image}
+					/>
+				))}
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -88,8 +131,8 @@ const styles = StyleSheet.create({
 		paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
 	},
 	logo: {
-		height: 28,
-		width: 28,
+		height: 50,
+		width: 50,
 		padding: 16,
 		borderRadius: 9999,
 	},
@@ -129,7 +172,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		flex: 1,
 		alignItems: "center",
-		marginRight: 8,
+		marginHorizontal: 8,
 
 		padding: 6,
 		backgroundColor: "rgb(229, 231, 235)",

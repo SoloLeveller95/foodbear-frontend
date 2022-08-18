@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { urlFor } from "../sanity";
 
 interface CategoryCardProps {
 	imgUrl: string;
@@ -7,13 +8,9 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({ imgUrl, title }: CategoryCardProps) {
-	interface CategoryCardProps {
-		imgUrl: string;
-		title: string;
-	}
 	return (
 		<TouchableOpacity style={styles.container}>
-			<Image style={styles.image} source={require("../assets/sushi.jpg")} />
+			<Image style={styles.image} source={{ uri: urlFor(imgUrl).url() }} />
 			<Text style={styles.text}>{title}</Text>
 		</TouchableOpacity>
 	);

@@ -1,6 +1,10 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { AntDesign, Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { urlFor } from "../sanity";
+import { RootStackParam } from "../App";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface RestaurantCardProps {
 	id: number;
@@ -27,20 +31,40 @@ export default function RestaurantCard({
 	long,
 	lat,
 }: RestaurantCardProps) {
+	const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 	return (
-		<TouchableOpacity style={styles.container}>
-			<Image style={styles.image} source={require("../assets/sushi.jpg")} />
+		<TouchableOpacity
+			style={styles.container}
+			onPress={() => {
+				navigation.navigate("Restaurant", {
+					id,
+					imgUrl,
+					title,
+					rating,
+					genre,
+					address,
+					short_description,
+					dishes,
+					long,
+					lat,
+				});
+			}}
+		>
+			<Image style={styles.image} source={{ uri: urlFor(imgUrl).url() }} />
 			<View style={styles.containerText}>
 				<Text style={styles.text}>{title}</Text>
 				<View style={styles.row}>
-					<AntDesign name="star" size={22} color="#00CCBB" />
+					<AntDesign name="star" size={16} color="#D70F64" />
 					<Text style={styles.ratingText}>
 						<Text>{rating}</Text> . {genre}
 					</Text>
 				</View>
 				<View style={styles.row}>
-					<Entypo name="location" size={22} color="rgb(107, 114, 128)" />
-					<Text style={styles.ratingText}>Nearby . {address}</Text>
+					<Entypo name="location" size={16} color="rgb(107, 114, 128)" />
+					<Text style={styles.ratingText}>
+						{" "}
+						{lat} {long} . {address}
+					</Text>
 				</View>
 			</View>
 		</TouchableOpacity>
