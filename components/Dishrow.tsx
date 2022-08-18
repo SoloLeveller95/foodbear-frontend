@@ -38,8 +38,6 @@ export default function Dishrow({
 		dispatch(removeFromBasket({ id }));
 	};
 
-	console.log();
-
 	return (
 		<>
 			<TouchableOpacity
