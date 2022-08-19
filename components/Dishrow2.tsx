@@ -4,7 +4,6 @@ import { urlFor } from "../sanity";
 import Currency from "react-currency-formatter";
 
 interface Dishrow2Props {
-	id: string;
 	name: string;
 	description: string;
 	price: number;
@@ -12,7 +11,6 @@ interface Dishrow2Props {
 }
 
 export default function Dishrow2({
-	id,
 	name,
 	description,
 	price,

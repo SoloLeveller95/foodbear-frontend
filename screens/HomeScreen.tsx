@@ -8,22 +8,25 @@ import {
 	Image,
 	TextInput,
 	ScrollView,
+	TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import {
-	MaterialCommunityIcons,
-	Feather,
-	FontAwesome5,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import Categories from "../components/Categories";
 import FeaturedRow from "../components/FeaturedRow";
-import client from "../sanity";
 import Dishrow2 from "../components/Dishrow2";
+
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import client from "../sanity";
+import { RootStackParam } from "../App";
 
 export default function HomeScreen() {
 	const [featuredCategories, setFeaturedCategories] = useState<any[]>([]);
 	const [dishes, setDishes] = useState<any[]>([]);
+	const [text, onChangeText] = useState("");
 	const [items, setItems] = useState(10);
+	const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
 	useEffect(() => {
 		client
@@ -76,19 +79,25 @@ name, price, short_description,image,_id
 						/>
 					</View>
 				</View>
-				<MaterialCommunityIcons
-					name="clipboard-list"
-					size={35}
-					color="#D70F64"
-				/>
+				<TouchableOpacity onPress={() => navigation.navigate("Orders")}>
+					<MaterialCommunityIcons
+						name="clipboard-list"
+						size={35}
+						color="#D70F64"
+					/>
+				</TouchableOpacity>
 			</View>
 			{/* Search */}
 			<View style={styles.headerBottom}>
 				<View style={styles.search}>
 					<Feather name="search" size={20} color="gray" />
 					<TextInput
-						placeholder="Restaurant and cuisines"
+						placeholder="Indianfoodtest"
 						keyboardType="default"
+						onChangeText={onChangeText}
+						onSubmitEditing={() => navigation.navigate("Search", { text })}
+						returnKeyType="go"
+						style={{ marginLeft: 10 }}
 					/>
 				</View>
 			</View>
@@ -111,7 +120,6 @@ name, price, short_description,image,_id
 				{dishes?.map((dish) => (
 					<Dishrow2
 						key={dish._id}
-						id={dish._id}
 						name={dish.name}
 						description={dish.short_description}
 						price={dish.price}

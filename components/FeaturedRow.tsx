@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
 import RestaurantCard from "./RestaurantCard";
+import { AntDesign } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
 import client from "../sanity";
 
 interface FeaturedRowProps {

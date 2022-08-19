@@ -1,15 +1,15 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
 import LogoScreen from "./screens/LogoScreen";
+import HomeScreen from "./screens/HomeScreen";
+import RestaurantScreen from "./screens/RestaurantScreen";
 import BasketScreen from "./screens/BasketScreen";
 import PreparingOrderScreen from "./screens/PreparingOrderScreen";
 import DeliveryScreen from "./screens/DeliveryScreen";
-import RestaurantScreen from "./screens/RestaurantScreen";
 import { store } from "./store";
 import { Provider } from "react-redux";
+import SearchScreen from "./screens/SearchScreen";
+import OrdersScreen from "./screens/OrdersScreen";
 
 export type RootStackParam = {
 	Logo: any;
@@ -29,6 +29,10 @@ export type RootStackParam = {
 		long: number;
 		lat: number;
 	};
+	Search: {
+		text: string;
+	};
+	Orders: any;
 };
 const Stack = createNativeStackNavigator<RootStackParam>();
 
@@ -43,6 +47,8 @@ export default function App() {
 				>
 					<Stack.Screen name="Logo" component={LogoScreen} />
 					<Stack.Screen name="Home" component={HomeScreen} />
+					<Stack.Screen name="Search" component={SearchScreen} />
+					<Stack.Screen name="Orders" component={OrdersScreen} />
 					<Stack.Screen name="Restaurant" component={RestaurantScreen} />
 					<Stack.Screen
 						options={{ presentation: "modal" }}

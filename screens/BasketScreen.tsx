@@ -9,19 +9,20 @@ import {
 	ScrollView,
 	Platform,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { selectRestaurant } from "../features/restaurantSlice";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AntDesign } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { selectRestaurant } from "../features/restaurantSlice";
 import {
 	removeFromBasket,
 	selectBasketItems,
 	selectBasketTotal,
 } from "../features/basketSlice";
-import { AntDesign } from "@expo/vector-icons";
-import { urlFor } from "../sanity";
 import Currency from "react-currency-formatter";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { urlFor } from "../sanity";
+import client from "../sanity";
 import { RootStackParam } from "../App";
 
 export default function BasketScreen() {
@@ -213,7 +214,9 @@ export default function BasketScreen() {
 							backgroundColor: basketTotal > 0 ? "#D70F64" : "gray",
 							padding: 16,
 						}}
-						onPress={() => navigation.navigate("PreparingOrderScreen")}
+						onPress={() => {
+							navigation.navigate("PreparingOrderScreen");
+						}}
 					>
 						<Text
 							style={{

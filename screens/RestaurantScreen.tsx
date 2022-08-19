@@ -6,17 +6,16 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import React, { useEffect } from "react";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { urlFor } from "../sanity";
-import { AntDesign, Entypo } from "@expo/vector-icons";
-// import BasketIcon from "../components/BasketIcon";
-import { setRestaurant } from "../features/restaurantSlice";
-import { useDispatch } from "react-redux";
-import Dishrow from "../components/Dishrow";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParam } from "../App";
+import Dishrow from "../components/Dishrow";
 import BasketIcon from "../components/BasketIcon";
+import { AntDesign, Entypo } from "@expo/vector-icons";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setRestaurant } from "../features/restaurantSlice";
+import { RootStackParam } from "../App";
+import { urlFor } from "../sanity";
 
 type Props = NativeStackScreenProps<RootStackParam, "Restaurant">;
 
@@ -55,8 +54,6 @@ const RestaurantScreen: React.FC<Props> = () => {
 			})
 		);
 	}, []);
-
-	// console.log(dishes);
 
 	return (
 		<>
@@ -103,6 +100,7 @@ const RestaurantScreen: React.FC<Props> = () => {
 							description={dish.short_description}
 							price={dish.price}
 							image={dish.image}
+							type={dish._type}
 						/>
 					))}
 				</View>
