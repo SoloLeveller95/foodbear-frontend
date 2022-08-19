@@ -25,7 +25,7 @@ export default function HomeScreen() {
 	const [featuredCategories, setFeaturedCategories] = useState<any[]>([]);
 	const [dishes, setDishes] = useState<any[]>([]);
 	const [text, onChangeText] = useState("");
-	const [items, setItems] = useState(10);
+	const [items] = useState(10);
 	const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
 	useEffect(() => {
