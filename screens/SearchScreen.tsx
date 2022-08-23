@@ -5,6 +5,7 @@ import { RootStackParam } from "../App";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import client from "../sanity";
 import Dishrow2 from "../components/Dishrow2";
+import axios from "axios";
 
 type Props = NativeStackScreenProps<RootStackParam, "Search">;
 
@@ -17,15 +18,19 @@ export default function SearchScreen() {
 		params: { text },
 	} = useRoute<RouteProp<RootStackParam, "Search">>();
 	useEffect(() => {
-		client
-			.fetch(
-				`*[name == $food] {
-name,price,short_description,image,_id
-}`,
-				{ food: text }
-			)
-			.then((data: any) => {
-				setFood(data);
+		axios
+			.get(`http://10.0.2.2:3001/api/v1/dishes/${text}`)
+			.then((res) => {
+				setFood(res.data);
+			})
+			.catch((err) => {
+				if (err.response) {
+					// client received an error response (5xx, 4xx)
+				} else if (err.request) {
+					// client never received a response, or request never left
+				} else {
+					// anything else
+				}
 			});
 	}, []);
 
@@ -37,7 +42,7 @@ name,price,short_description,image,_id
 					name={food.name}
 					description={food.short_description}
 					price={food.price}
-					image={food.image}
+					imgUrl={food.image}
 				/>
 			))}
 			<View

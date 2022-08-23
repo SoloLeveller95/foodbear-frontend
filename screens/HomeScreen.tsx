@@ -47,24 +47,10 @@ export default function HomeScreen() {
 		// 		console.log(data);
 		// 	});
 
-		// axios
-		// 	.get("http://10.0.2.2:3001/api/v1/categories")
-		// 	.then((res) => {
-		// 		console.log(res.data);
-		// 	})
-		// 	.catch((err) => {
-		// 		if (err.response) {
-		// 			// client received an error response (5xx, 4xx)
-		// 		} else if (err.request) {
-		// 			// client never received a response, or request never left
-		// 		} else {
-		// 			// anything else
-		// 		}
-		// 	});
-
 		axios
 			.get("http://10.0.2.2:3001/api/v1/featureds")
 			.then((res) => {
+				console.log(res.data);
 				setFeaturedCategories(res.data);
 			})
 			.catch((err) => {
@@ -155,16 +141,17 @@ export default function HomeScreen() {
 
 				{/* Featured rows */}
 
-				{featuredCategories?.map((category) => (
+				{featuredCategories?.map((featured) => (
 					<FeaturedRow
-						key={category._id}
-						title={category.name}
-						description={category.short_description}
-						id={category._id}
+						key={featured._id}
+						title={featured.name}
+						description={featured.short_description}
+						id={featured._id}
+						type={featured.type}
 					/>
 				))}
 
-				{dishes?.map((dish) => (
+				{dishes?.slice(0, 5).map((dish) => (
 					<Dishrow2
 						key={dish._id}
 						name={dish.name}
