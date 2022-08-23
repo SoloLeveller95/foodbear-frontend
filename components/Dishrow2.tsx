@@ -7,14 +7,14 @@ interface Dishrow2Props {
 	name: string;
 	description: string;
 	price: number;
-	image: any;
+	imgUrl: any;
 }
 
 export default function Dishrow2({
 	name,
 	description,
 	price,
-	image,
+	imgUrl,
 }: Dishrow2Props) {
 	return (
 		<>
@@ -44,7 +44,7 @@ export default function Dishrow2({
 								width: 80,
 								padding: 16,
 							}}
-							source={{ uri: urlFor(image).url() }}
+							source={{ uri: imgUrl }}
 						/>
 					</View>
 				</View>

@@ -15,11 +15,11 @@ import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import Categories from "../components/Categories";
 import FeaturedRow from "../components/FeaturedRow";
 import Dishrow2 from "../components/Dishrow2";
-
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import client from "../sanity";
 import { RootStackParam } from "../App";
+import axios from "axios";
 
 export default function HomeScreen() {
 	const [featuredCategories, setFeaturedCategories] = useState<any[]>([]);
@@ -29,36 +29,83 @@ export default function HomeScreen() {
 	const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
 	useEffect(() => {
-		client
-			.fetch(
-				`*[_type == "featured"] {
-  ...,
-  restaurants[]->{
-    ...,
-    dishes[]->,
-type-> {
-  name
-}
-  }
-}`
-			)
-			.then((data: any) => {
-				setFeaturedCategories(data);
+		// client
+		// 	.fetch(
+		// 		`*[_type == "featured"] {
+		//   ...,
+		//   restaurants[]->{
+		//     ...,
+		//     dishes[]->,
+		// type-> {
+		//   name
+		// }
+		//   }
+		// }`
+		// 	)
+		// 	.then((data: any) => {
+		// 		// setFeaturedCategories(data);
+		// 		console.log(data);
+		// 	});
+
+		// axios
+		// 	.get("http://10.0.2.2:3001/api/v1/categories")
+		// 	.then((res) => {
+		// 		console.log(res.data);
+		// 	})
+		// 	.catch((err) => {
+		// 		if (err.response) {
+		// 			// client received an error response (5xx, 4xx)
+		// 		} else if (err.request) {
+		// 			// client never received a response, or request never left
+		// 		} else {
+		// 			// anything else
+		// 		}
+		// 	});
+
+		axios
+			.get("http://10.0.2.2:3001/api/v1/featureds")
+			.then((res) => {
+				setFeaturedCategories(res.data);
+			})
+			.catch((err) => {
+				if (err.response) {
+					// client received an error response (5xx, 4xx)
+				} else if (err.request) {
+					// client never received a response, or request never left
+				} else {
+					// anything else
+				}
 			});
 	}, []);
 
 	useEffect(() => {
-		client
-			.fetch(
-				`*[_type == "dish"] {
-name, price, short_description,image,_id
-}[0...$items]`,
-				{ items: items }
-			)
-			.then((data: any) => {
-				setDishes(data);
+		// 		client
+		// 			.fetch(
+		// 				`*[_type == "dish"] {
+		// name, price, short_description,image,_id
+		// }[0...$items]`,
+		// 				{ items: items }
+		// 			)
+		// 			.then((data: any) => {
+		// 				setDishes(data);
+
+		axios
+			.get("http://10.0.2.2:3001/api/v1/dishes")
+			.then((res) => {
+				setDishes(res.data);
+			})
+			.catch((err) => {
+				if (err.response) {
+					// client received an error response (5xx, 4xx)
+				} else if (err.request) {
+					// client never received a response, or request never left
+				} else {
+					// anything else
+				}
 			});
+		// 			});
 	}, []);
+
 	return (
 		<SafeAreaView style={styles.AndroidSafeArea}>
 			{/* Header */}
@@ -123,7 +170,7 @@ name, price, short_description,image,_id
 						name={dish.name}
 						description={dish.short_description}
 						price={dish.price}
-						image={dish.image}
+						imgUrl={dish.image}
 					/>
 				))}
 			</ScrollView>

@@ -10,7 +10,8 @@ interface CategoryCardProps {
 export default function CategoryCard({ imgUrl, title }: CategoryCardProps) {
 	return (
 		<TouchableOpacity style={styles.container}>
-			<Image style={styles.image} source={{ uri: urlFor(imgUrl).url() }} />
+			{/* <Image style={styles.image} source={{ uri: urlFor(imgUrl).url() }} /> */}
+			<Image style={styles.image} source={{ uri: imgUrl }} />
 			<Text style={styles.text}>{title}</Text>
 		</TouchableOpacity>
 	);
