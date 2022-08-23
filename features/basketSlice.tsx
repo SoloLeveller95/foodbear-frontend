@@ -38,6 +38,7 @@ export const basketSlice = createSlice({
 export const { addToBasket, removeFromBasket } = basketSlice.actions;
 
 export const selectBasketItems = (state: any) => state.basket.items;
+// export const emptyTheBasket = (state: any) => state.basket.items;
 
 export const selectBasketItemsWithId = (state: any, id: any) =>
 	state.basket.items.filter((item: any) => item.id === id);

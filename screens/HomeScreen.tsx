@@ -25,7 +25,7 @@ export default function HomeScreen() {
 	const [featuredCategories, setFeaturedCategories] = useState<any[]>([]);
 	const [dishes, setDishes] = useState<any[]>([]);
 	const [text, onChangeText] = useState("");
-	const [items] = useState(10);
+	const [limit, setLimit] = useState(3);
 	const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
 
 	useEffect(() => {
@@ -76,7 +76,7 @@ export default function HomeScreen() {
 		// 				setDishes(data);
 
 		axios
-			.get("http://10.0.2.2:3001/api/v1/dishes")
+			.get(`http://10.0.2.2:3001/api/v1/dishes?limit=${limit}`)
 			.then((res) => {
 				setDishes(res.data);
 			})
@@ -90,7 +90,7 @@ export default function HomeScreen() {
 				}
 			});
 		// 			});
-	}, []);
+	}, [limit]);
 
 	return (
 		<SafeAreaView style={styles.AndroidSafeArea}>
@@ -151,7 +151,7 @@ export default function HomeScreen() {
 					/>
 				))}
 
-				{dishes?.slice(0, 5).map((dish) => (
+				{dishes?.map((dish) => (
 					<Dishrow2
 						key={dish._id}
 						name={dish.name}
@@ -160,6 +160,28 @@ export default function HomeScreen() {
 						imgUrl={dish.image}
 					/>
 				))}
+
+				<TouchableOpacity
+					style={{ justifyContent: "center", alignItems: "center" }}
+					onPress={() => setLimit(limit + 5)}
+				>
+					<Text
+						style={{
+							color: "white",
+							width: 100,
+							fontSize: 16,
+							lineHeight: 16,
+							marginVertical: 40,
+							paddingVertical: 10,
+							backgroundColor: "#d70f64",
+							textAlign: "center",
+							justifyContent: "center",
+							borderRadius: 10,
+						}}
+					>
+						Load more
+					</Text>
+				</TouchableOpacity>
 			</ScrollView>
 		</SafeAreaView>
 	);

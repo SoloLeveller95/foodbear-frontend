@@ -8,8 +8,7 @@ import {
 	View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeFromBasket, selectBasketItems } from "../features/basketSlice";
+
 import Dishrow2 from "../components/Dishrow2";
 import axios from "axios";
 
