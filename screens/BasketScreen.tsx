@@ -33,7 +33,6 @@ export default function BasketScreen() {
 	const [groupedItemsInBasket, setGroupedItemsInBasket] = useState<any[]>([]);
 	const basketTotal = useSelector(selectBasketTotal);
 	const dispatch = useDispatch();
-	// console.log(groupedItemsInBasket);
 
 	useEffect(() => {
 		const groupedItems = items.reduce((results: any, item: any) => {
@@ -51,11 +50,6 @@ export default function BasketScreen() {
 			.then((res) => console.log(res))
 			.catch((err) => console.error(err));
 	};
-
-	// console.log(groupedItemsInBasket);
-	console.log(items);
-	// console.log(restaurant);
-	// console.log(basketTotal);
 
 	return (
 		<SafeAreaView style={styles.AndroidSafeArea}>

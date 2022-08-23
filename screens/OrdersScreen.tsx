@@ -1,12 +1,48 @@
-import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { selectBasketItems } from "../features/basketSlice";
+import {
+	Platform,
+	ScrollView,
+	StatusBar,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromBasket, selectBasketItems } from "../features/basketSlice";
 import Dishrow2 from "../components/Dishrow2";
+import axios from "axios";
 
 export default function OrdersScreen() {
 	// const [items] = useState<any[]>(useSelector(selectBasketItems));
 	const [items, setItems] = useState<any[]>([]);
+
+	useEffect(() => {
+		axios
+			.get("http://10.0.2.2:3001/api/v1/orders")
+			.then((res) => {
+				setItems(res.data);
+			})
+			.catch((err) => {
+				if (err.response) {
+					// client received an error response (5xx, 4xx)
+				} else if (err.request) {
+					// client never received a response, or request never left
+				} else {
+					// anything else
+				}
+			});
+		//
+	}, [items]);
+
+	const deleteOrders = (_id: string) => {
+		axios
+			.delete(`http://10.0.2.2:3001/api/v1/orders/${_id}`)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => console.error(err));
+	};
 
 	if (items.length === 0) {
 		return (
@@ -20,17 +56,33 @@ export default function OrdersScreen() {
 			<View style={styles.OrdersMadeContainer}>
 				<Text style={styles.OrdersMadeText}>Your Orders</Text>
 			</View>
-			{items.map((item) => (
-				<View key={item._id}>
-					<Dishrow2
-						key={item._id}
-						name={item.name}
-						description={item.short_description}
-						price={item.price}
-						imgUrl={item.image}
-					/>
-				</View>
-			))}
+			<ScrollView>
+				{items.map((item) => (
+					<View key={item._id}>
+						<Dishrow2
+							key={item._id}
+							name={item.name}
+							description={item.description}
+							price={item.price}
+							imgUrl={item.imageUrl}
+						/>
+						<TouchableOpacity onPress={() => deleteOrders(item._id)}>
+							<Text
+								style={{
+									color: "#d70f64",
+									fontSize: 16,
+									lineHeight: 16,
+									marginTop: 20,
+									marginLeft: 10,
+									textAlign: "center",
+								}}
+							>
+								Remove
+							</Text>
+						</TouchableOpacity>
+					</View>
+				))}
+			</ScrollView>
 			<View
 				style={{
 					borderTopWidth: 1,
