@@ -15,7 +15,7 @@ interface DishrowProps {
 	name: string;
 	description: string;
 	price: number;
-	image: any;
+	imageUrl: any;
 	type: string;
 }
 
@@ -24,15 +24,16 @@ export default function Dishrow({
 	name,
 	description,
 	price,
-	image,
+	imageUrl,
 	type,
 }: DishrowProps) {
 	const [isPressed, setIsPressed] = useState<boolean>(false);
 	const items = useSelector((state) => selectBasketItemsWithId(state, id));
 	const dispatch = useDispatch();
+	console.log(items);
 
 	const addItemToBasket = () => {
-		dispatch(addToBasket({ id, name, description, price, image, type }));
+		dispatch(addToBasket({ id, name, description, price, imageUrl }));
 	};
 
 	const removeItemFromBasket = () => {
@@ -69,7 +70,7 @@ export default function Dishrow({
 								width: 80,
 								padding: 16,
 							}}
-							source={{ uri: urlFor(image).url() }}
+							source={{ uri: imageUrl }}
 						/>
 					</View>
 				</View>

@@ -5,7 +5,8 @@ import { selectBasketItems } from "../features/basketSlice";
 import Dishrow2 from "../components/Dishrow2";
 
 export default function OrdersScreen() {
-	const [items] = useState<any[]>(useSelector(selectBasketItems));
+	// const [items] = useState<any[]>(useSelector(selectBasketItems));
+	const [items, setItems] = useState<any[]>([]);
 
 	if (items.length === 0) {
 		return (
@@ -26,7 +27,7 @@ export default function OrdersScreen() {
 						name={item.name}
 						description={item.short_description}
 						price={item.price}
-						image={item.image}
+						imgUrl={item.image}
 					/>
 				</View>
 			))}

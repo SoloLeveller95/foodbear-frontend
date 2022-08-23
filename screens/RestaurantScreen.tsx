@@ -60,10 +60,7 @@ const RestaurantScreen: React.FC<Props> = () => {
 			<BasketIcon />
 			<ScrollView>
 				<View>
-					<Image
-						style={styles.headerImage}
-						source={{ uri: urlFor(imgUrl).url() }}
-					/>
+					<Image style={styles.headerImage} source={{ uri: imgUrl }} />
 					<TouchableOpacity
 						style={styles.backArrow}
 						onPress={navigation.goBack}
@@ -99,7 +96,7 @@ const RestaurantScreen: React.FC<Props> = () => {
 							name={dish.name}
 							description={dish.short_description}
 							price={dish.price}
-							image={dish.image}
+							imageUrl={dish.image}
 							type={dish._type}
 						/>
 					))}

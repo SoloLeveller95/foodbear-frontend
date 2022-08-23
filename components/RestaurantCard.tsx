@@ -50,7 +50,7 @@ export default function RestaurantCard({
 				});
 			}}
 		>
-			<Image style={styles.image} source={{ uri: urlFor(imgUrl).url() }} />
+			<Image style={styles.image} source={{ uri: imgUrl }} />
 			<View style={styles.containerText}>
 				<Text style={styles.text}>{title}</Text>
 				<View style={styles.row}>

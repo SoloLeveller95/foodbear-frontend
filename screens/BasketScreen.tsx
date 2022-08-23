@@ -24,6 +24,7 @@ import Currency from "react-currency-formatter";
 import { urlFor } from "../sanity";
 import client from "../sanity";
 import { RootStackParam } from "../App";
+import axios from "axios";
 
 export default function BasketScreen() {
 	const navigation = useNavigation<NativeStackNavigationProp<RootStackParam>>();
@@ -32,17 +33,27 @@ export default function BasketScreen() {
 	const [groupedItemsInBasket, setGroupedItemsInBasket] = useState<any[]>([]);
 	const basketTotal = useSelector(selectBasketTotal);
 	const dispatch = useDispatch();
+	// console.log(groupedItemsInBasket);
 
 	useEffect(() => {
 		const groupedItems = items.reduce((results: any, item: any) => {
 			(results[item.id] = results[item.id] || []).push(item);
 			return results;
 		}, {});
+
+		console.log(groupedItems);
 		setGroupedItemsInBasket(groupedItems);
 	}, [items]);
 
+	const createOrder = () => {
+		axios
+			.post("http://10.0.2.2:3001/api/v1/orders", items)
+			.then((res) => console.log(res))
+			.catch((err) => console.error(err));
+	};
+
 	// console.log(groupedItemsInBasket);
-	// console.log(items);
+	console.log(items);
 	// console.log(restaurant);
 	// console.log(basketTotal);
 
@@ -139,7 +150,7 @@ export default function BasketScreen() {
 								{items.length} x{" "}
 							</Text>
 							<Image
-								source={{ uri: urlFor(items[0]?.image).url() }}
+								source={{ uri: items[0]?.imageUrl }}
 								style={{
 									height: 48,
 									width: 48,
@@ -215,6 +226,7 @@ export default function BasketScreen() {
 							padding: 16,
 						}}
 						onPress={() => {
+							createOrder();
 							navigation.navigate("PreparingOrderScreen");
 						}}
 					>
